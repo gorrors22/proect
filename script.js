@@ -7,10 +7,14 @@ const settingsModal = document.getElementById('settingsModal');
 const closeSettings = document.querySelector('.close');
 const saveSettingsButton = document.getElementById('saveSettings');
 const maxAttemptsInput = document.getElementById('maxAttemptsInput');
+const newGameButton = document.getElementById('newGameButton');
+const screamerVideo = document.getElementById('screamerVideo');
+const container = document.querySelector('.container'); // Получаем ссылку на контейнер
+
 
 let secretNumber;
 let attempts;
-let maxAttempts = 7; //  Начальное значение по умолчанию
+let maxAttempts = 7;
 
 function startGame() {
     secretNumber = Math.floor(Math.random() * 100) + 1;
@@ -18,7 +22,13 @@ function startGame() {
     attemptsDisplay.textContent = attempts;
     message.textContent = '';
     guessInput.value = '';
+    guessInput.disabled = false;
+    guessButton.disabled = false;
     guessInput.focus();
+    screamerVideo.style.display = 'none';
+    screamerVideo.pause();
+    screamerVideo.currentTime = 0;
+    container.classList.remove('screamer-active'); // Убираем класс при начале игры
 }
 
 function checkGuess() {
@@ -32,15 +42,18 @@ function checkGuess() {
   attempts++;
   attemptsDisplay.textContent = attempts;
 
-  if (attempts > maxAttempts) {
-      message.textContent = `Вы проиграли! Загаданное число было ${secretNumber}.`;
-      guessButton.disabled = true;
-      return;
-  }
+    if (attempts > maxAttempts) {
+        message.textContent = `Вы проиграли! Загаданное число было ${secretNumber}.`;
+        guessButton.disabled = true;
+        guessInput.disabled = true;
+        showScreamer();
+        return;
+    }
 
   if (guess === secretNumber) {
       message.textContent = `Поздравляю! Вы угадали число ${secretNumber} за ${attempts} попыток!`;
       guessButton.disabled = true;
+      guessInput.disabled = true;
   } else if (guess < secretNumber) {
       message.textContent = 'Загаданное число больше!';
   } else {
@@ -49,6 +62,19 @@ function checkGuess() {
   guessInput.value = '';
   guessInput.focus();
 }
+
+function showScreamer() {
+    container.classList.add('screamer-active'); // Добавляем класс при показе скримера
+    screamerVideo.style.display = 'block';
+    screamerVideo.play();
+}
+
+screamerVideo.addEventListener('click', function() {
+    screamerVideo.style.display = 'none';
+    screamerVideo.pause();
+    screamerVideo.currentTime = 0;
+    container.classList.remove('screamer-active'); // Убираем класс при скрытии видео
+});
 
 guessInput.addEventListener('keypress', function(event) {
     if (event.keyCode === 13) {
@@ -59,7 +85,6 @@ guessInput.addEventListener('keypress', function(event) {
 
 guessButton.addEventListener('click', checkGuess);
 
-// Модальное окно
 settingsButton.addEventListener('click', function() {
   settingsModal.style.display = 'block';
 });
@@ -78,10 +103,13 @@ saveSettingsButton.addEventListener('click', function(){
     const newMaxAttempts = parseInt(maxAttemptsInput.value);
         if (newMaxAttempts >= 5 && newMaxAttempts <= 10) {
             maxAttempts = newMaxAttempts;
-            settingsModal.style.display = 'none'; // закрыть модальное окно
+            settingsModal.style.display = 'none';
             startGame();
         } else {
-            alert('Пожалуйста, введите число от 5 до 10.'); // Сообщение об ошибке если ввели неверное число
+            alert('Пожалуйста, введите число от 5 до 10.');
         }
 });
+
+newGameButton.addEventListener('click', startGame);
+
 startGame();
