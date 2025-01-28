@@ -6,6 +6,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    transition: background 0.5s ease; /* Анимация фона */
 }
 
 .container {
@@ -15,16 +16,40 @@ body {
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Тень */
+    transition: background-color 0.5s ease, color 0.5s ease;  /* Анимация для контейнера */
+}
+
+.container.screamer-active {
+    background-color: rgba(0, 0, 0, 0.9); /* Прозрачный черный фон */
+    color: white; /* Белый цвет текста */
+}
+
+.container.screamer-active h1 {
+    color: white; /* Белый цвет заголовка */
+}
+.container.screamer-active p {
+    color: white; /* Белый цвет параграфа */
+}
+
+.container.screamer-active input[type="number"],
+.container.screamer-active button {
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.3); /* белая тень на инпут и кнопки */
+}
+
+.container.screamer-active button {
+    background-color: #444; /* Темно-серый цвет кнопок */
 }
 
 h1 {
     color: #333;
     margin-bottom: 20px;
+    transition: color 0.5s ease;
 }
 
 p {
     color: #555;
     margin-bottom: 10px;
+    transition: color 0.5s ease;
 }
 
 input[type="number"] {
@@ -36,11 +61,12 @@ input[type="number"] {
     border-radius: 5px;
     font-size: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* тень на инпут */
+    transition: box-shadow 0.3s ease, border 0.3s ease; /* Анимация для input */
 }
 
 button {
     padding: 12px 20px;
-    background-color: #4CAF50;
+    background-color: #af4c91;
     color: white;
     border: none;
     cursor: pointer;
@@ -51,7 +77,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #a04586;
 }
 
 #settingsButton{
@@ -110,6 +136,7 @@ button:hover {
     border-radius: 5px;
     font-size: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* тень на инпут */
+    transition: box-shadow 0.3s ease, border 0.3s ease;
 }
 
 #saveSettings{
